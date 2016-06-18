@@ -154,6 +154,35 @@ namespace GoodAI.Modules.TetrisWorld
             set { SetOutput(7, value); }
         }
 
+        [MyOutputBlock(8)]
+        public MyMemoryBlock<float> BrickNumberOutput
+        {
+            get { return GetOutput(8); }
+            set { SetOutput(8, value); }
+        }
+
+        [MyOutputBlock(9)]
+        public MyMemoryBlock<float> BrickPositionOutput
+        {
+            get { return GetOutput(9); }
+            set { SetOutput(9, value); }
+        }
+
+        [MyOutputBlock(10)]
+        public MyMemoryBlock<float> BrickOutput
+        {
+            get { return GetOutput(10); }
+            set { SetOutput(10, value); }
+        }
+
+        [MyOutputBlock(11)]
+        public MyMemoryBlock<float> StepsFromDropOutput
+        {
+            get { return GetOutput(11); }
+            set { SetOutput(11, value); }
+        }
+        
+
         public MyMemoryBlock<float> Bitmaps { get; protected set; }
 
         public MyMemoryBlock<float> AgentVisualTemp { get; protected set; } // used e.g. for holding random numbers during noise generation
@@ -333,6 +362,11 @@ namespace GoodAI.Modules.TetrisWorld
             VisualOutput.Metadata[MemoryBlockMetadataKeys.RenderingMethod] = RenderingMethod.Raw.ToString();
 
             AgentVisualTemp.Count = VisualOutput.Count * 3;   // for each color channel one random number
+
+            BrickNumberOutput.Count = 1;
+            BrickPositionOutput.Count = 3;
+            BrickOutput.Count = 16;
+            StepsFromDropOutput.Count = 1;
 
             // noise can be added
             //IsImageNoise = true;

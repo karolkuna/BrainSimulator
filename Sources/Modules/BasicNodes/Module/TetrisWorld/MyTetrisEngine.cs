@@ -1065,7 +1065,38 @@ namespace GoodAI.Modules.TetrisWorld
 
             m_world.LevelOutput.Host[0] = (float)m_level;
             m_world.LevelOutput.SafeCopyToDevice();
-            
+
+            m_world.BrickNumberOutput.Host[0] = m_tetromino != null ? ((int) m_tetromino.TetrominoBrickType) : -1;
+            m_world.BrickNumberOutput.SafeCopyToDevice();
+
+            if (m_tetromino == null)
+            {
+                m_world.BrickOutput.Fill(0.0f);
+            }
+            else
+            {
+                BrickType[,] descriptiveGrid = m_tetromino.DescriptiveGrid;
+                int index = 0;
+                for (int iRow = 0; iRow < descriptiveGrid.GetLength(0); iRow++)
+                {
+                    for (int iCol = 0; iCol < descriptiveGrid.GetLength(1); iCol++)
+                    {
+                        m_world.BrickOutput.Host[index] = (float)descriptiveGrid[iRow, iCol];
+                        index++;
+                    }
+                }
+                m_world.BrickOutput.SafeCopyToDevice();
+            }
+
+            m_world.StepsFromDropOutput.Host[0] = m_stepsFromLastDrop;
+            m_world.StepsFromDropOutput.SafeCopyToDevice();
+
+            m_world.BrickPositionOutput.Host[0] =  m_tetromino != null ? m_tetromino.Column : -1;
+            m_world.BrickPositionOutput.Host[1] =  m_tetromino != null ? m_tetromino.Row : -1;
+            m_world.BrickPositionOutput.Host[2] =  m_tetromino != null ? ((int) m_tetromino.Rotation) : -1;
+            m_world.BrickPositionOutput.SafeCopyToDevice();
+
+
             // visual output is updated by the RenderGame task
         }
 
